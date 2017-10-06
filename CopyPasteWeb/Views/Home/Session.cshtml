@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Session";
+}
+<div class="row">
+    <div class="page-header">
+        <h2>ID da sessão: <small>@ViewBag.SessionID</small></h2>
+    </div>
+
+    <textarea class="form-control" style="min-height:300px; min-width: 100%"></textarea>
+</div>
+
+<div class="row">
+    <hr />
+    <form class="form-inline">
+        <button type="button" id="btn-send" class="btn btn-lg btn-success">
+            <i class="glyphicon glyphicon-send"></i>
+            Enviar
+        </button>
+        <button type="button" id="btn-receive" class="btn btn-lg btn-primary">
+            <i class="glyphicon glyphicon-download-alt"></i>
+            Receber
+        </button>
+    </form>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ('@ViewBag.SessionID'.length !== 32) {
+                alert('Informe ou inicie uma nova sessão!');
+                window.location.replace('@ViewBag.UrlHome');
+            }
+
+            $('#btn-send').click(function () {
+                alert('Enviar!');
+            });
+
+            $('#btn-receive').click(function () {
+                alert('Receber!');
+            });
+        });
+    </script>
+}
