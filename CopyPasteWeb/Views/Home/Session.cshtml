@@ -6,7 +6,7 @@
         <h2>ID da sessão: <small>@ViewBag.SessionID</small></h2>
     </div>
 
-    <textarea class="form-control" style="min-height:300px; min-width: 100%"></textarea>
+    <textarea id="content-area" class="form-control" style="min-height:300px; min-width: 100%"></textarea>
 </div>
 
 <div class="row">
@@ -31,13 +31,52 @@
                 window.location.replace('@ViewBag.UrlHome');
             }
 
-            $('#btn-send').click(function () {
-                alert('Enviar!');
-            });
+            var _enabled = function (enabled) {
+                $('#content-area').prop('disabled', !enabled);
+            }
 
-            $('#btn-receive').click(function () {
-                alert('Receber!');
-            });
+            var _send = function () {
+                _enabled(false);
+
+                $.ajax({
+                    method: "POST",
+                    url: "@ViewBag.UrlSend",
+                    data: { sessionID: '@ViewBag.SessionID' , content: $('#content-area').val() }
+                })
+                .done(function (data, status, config) {
+                    if (config.statusText === 'OK') {
+                        $('#content-area').val(data);
+                    } else {
+                        console.log('Erro:', data, status, config);
+                    }
+
+                    _enabled(true);
+                });
+            };
+
+            var _receive = function () {
+                _enabled(false);
+
+                $.ajax({
+                    method: "POST",
+                    url: "@ViewBag.UrlReceive",
+                    data: { sessionID: '@ViewBag.SessionID' }
+                })
+                .done(function (data, status, config) {
+                    if (config.statusText === 'OK') {
+                        $('#content-area').val(data);
+                    } else {
+                        console.log('Erro:', data, status, config);
+                    }
+
+                    _enabled(true);
+                });
+            };
+
+            $('#btn-send').click(function () { _send() });
+            $('#btn-receive').click(function () { _receive() });
+
+            _receive();
         });
     </script>
 }
