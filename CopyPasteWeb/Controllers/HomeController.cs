@@ -28,7 +28,7 @@ namespace CopyPastWeb.Controllers
 
         public ActionResult NewSession()
         {
-            return Content(Guid.NewGuid().ToString("N"));
+            return Content(_db.NewID());
         }
 
         [ActionName(SESSION_ACTION_NAME)]
