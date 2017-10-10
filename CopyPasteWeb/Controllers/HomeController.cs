@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.SessionState;
+﻿using System.Web.Mvc;
 
 namespace CopyPastWeb.Controllers
 {
+    using CopyPasteData;
+
     public class HomeController : Controller
     {
         public const string SESSION_ACTION_NAME = "Session";
-        private readonly Database _db;
+        private readonly IDatasetRepository _db;
 
         public HomeController()
         {
-            _db = Database.Instance;
+            _db = new DatasetRepository();
         }
 
         public ActionResult Index()
