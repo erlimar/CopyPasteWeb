@@ -3,18 +3,34 @@
 }
 
 <div class="jumbotron">
-    <h1>@Constants.ProductName</h1>
-    <p class="lead">@Constants.ProductDescription</p>
+    <div class="row">
+        <h1>@Constants.ProductName</h1>
+        <p class="lead">@Constants.ProductDescription</p>
+    </div>
+</div>
 
-    <hr />
+<div class="row">
+    <nav class="navbar navbar-default navbar-text">
+        <form class="navbar-form navbar-btn">
+            <button type="button" id="btn-nova-sessao" class="btn btn-lg btn-default" title="Gerar novo ID de sessão">
+                <i class="glyphicon glyphicon-retweet"></i>
+            </button>
+            <div class="form-group form-group-lg">
+                <input type="text" id="txt-sessao" class="form-control" placeholder="Session ID">
+            </div>
+            <button type="button" id="btn-iniciar" class="btn btn-lg btn-primary" title="Iniciar Sessão">
+                <i class="glyphicon glyphicon-console"></i>
+            </button>
+        </form>
+    </nav>
+</div>
 
-    <form class="form-inline">
-        <button type="button" id="btn-nova-sessao" class="btn btn-lg btn-default">Nova sessão</button>
-        <div class="form-group form-group-lg">
-            <input type="text" id="txt-sessao" class="form-control">
+<div class="modal fade"  tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            Mensagem do modal
         </div>
-        <button type="button" id="btn-iniciar" class="btn btn-lg btn-primary">Iniciar</button>
-    </form>
+    </div>
 </div>
 
 @section scripts {
@@ -31,12 +47,13 @@
                 _enabled(false);
 
                 $.get("@ViewBag.UrlNewSession", function (data, status, config) {
+                    console.log(data, status, config);
                     if (config.statusText === 'OK') {
                         $('#txt-sessao').val(data);
                     } else {
                         $('#txt-sessao').val('Error!');
                     }
-                    
+
                     _enabled(true);
                 });
             });
@@ -44,7 +61,7 @@
             $('#btn-iniciar').click(function () {
                 var session = $('#txt-sessao').val();
 
-                if (typeof (session) === 'string' && session.length === 32) {
+                if (typeof (session) === 'string' && session.length === 8) {
                     var url = '@ViewBag.UrlSession' + '?id=' + session;
 
                     window.location.replace(url);
@@ -52,7 +69,7 @@
                     return;
                 }
 
-                alert('Informe uma sessão!');
+                gAlert('Informe uma sessão!');
             });
 
         });
